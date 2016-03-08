@@ -3,10 +3,8 @@ FROM ubuntu:15.10
 MAINTAINER Daisuke Miyashiro <daisuke@xenodata-lab.com>
 
 RUN apt-get update -y
-RUN apt-get install -y daemon libpoppler-dev ruby2.2
-RUN mkdir /mongo
-ADD mongodb-linux-x86_64-3.2.3 /mongo
-ENV PATH=/mongo/bin:$PATH
-RUN daemon -- /mongo/bin/mongod --config /etc/mongod.conf
+RUN apt-get install -y git daemon libpoppler-dev ruby2.2 ruby2.2-dev build-essential zlib1g-dev mongodb-clients
+RUN ln -s /usr/bin/ruby2.2 /usr/bin/ruby
+RUN ln -s /usr/bin/gem2.2 /usr/bin/gem
 
 CMD ["/bin/bash"]
