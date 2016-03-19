@@ -7,5 +7,8 @@ RUN apt-get install -y git daemon libpoppler-dev ruby2.2 ruby2.2-dev build-essen
 RUN ln -s /usr/bin/ruby2.2 /usr/bin/ruby
 RUN ln -s /usr/bin/gem2.2 /usr/bin/gem
 RUN mkdir -p /pipeline/cache/bundle-install
+ADD Gemfile /
+RUN gem install bundler
+RUN bundle install
 
 CMD ["/bin/bash"]
