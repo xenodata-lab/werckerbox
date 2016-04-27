@@ -1,6 +1,6 @@
 FROM ubuntu:15.10
 
-MAINTAINER Daisuke Miyashiro <daisuke@xenodata-lab.com>
+MAINTAINER xenodatalab <development@xenodata-lab.com>
 
 RUN apt-get update -y
 RUN apt-get install -y git daemon libpoppler-dev libgirepository-1.0 ruby2.2 ruby2.2-dev build-essential zlib1g-dev mongodb-clients
