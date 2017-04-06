@@ -9,6 +9,27 @@ RUN apt-get install -y fonts-ipafont-gothic fonts-ipafont-mincho
 RUN apt-get install -y imagemagick libmagickcore-dev libmagickwand-dev
 RUN apt-get install -y ruby libxslt1-dev
 
+RUN mkdir -p ~/tmp
+RUN cd ~/tmp && \
+    wget 'https://storage.googleapis.com/xeno-public-files/CRF%2B%2B-0.58.tar.gz' -O CRF++-0.58.tar.gz && \
+    tar -xf CRF++-0.58.tar.gz && \
+    rm -f CRF++-0.58.tar.gz && \
+    cd ~/tmp/CRF++-0.58 && \
+    ./configure && make && \
+    make install && \
+    ldconfig && \
+    rm -rf ~/tmp/CRF++-0.58 && \
+    cd ~/tmp && \
+    wget 'https://storage.googleapis.com/xeno-public-files/cabocha-0.69.tar.bz2' -O cabocha-0.69.tar.bz2 && \
+    tar -xf cabocha-0.69.tar.bz2 && \
+    rm -f cabocha-0.69.tar.bz2 && \
+    cd ~/tmp/cabocha-0.69 && \
+    ./configure --with-charset=UTF8 && \
+    make && \
+    make install && \
+    ldconfig && \
+    rm -rf ~/tmp/cabocha-0.69
+
 RUN mkdir -p /dictionary
 WORKDIR /dictionary
 RUN wget 'https://osdn.jp/frs/redir.php?m=iij&f=%2Fnaist-jdic%2F53500%2Fmecab-naist-jdic-0.6.3b-20111013.tar.gz' -O mecab-naist-jdic.tar.gz && \
