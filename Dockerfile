@@ -2,12 +2,12 @@ FROM xenodatalab/base-ruby:ruby-2.4.1
 
 MAINTAINER xenodatalab <development@xenodata-lab.com>
 
-RUN apt-get update -y
-RUN apt-get install -y curl git mecab libmecab-dev mecab-naist-jdic
-RUN apt-get install -y daemon libpoppler-dev libpoppler-glib-dev poppler-data poppler-utils libgirepository-1.0 libgirepository1.0-dev poppler-utils graphicsmagick build-essential zlib1g-dev libreadline-dev mongodb-clients
-RUN apt-get install -y fonts-ipafont-gothic fonts-ipafont-mincho
-RUN apt-get install -y imagemagick libmagickcore-dev libmagickwand-dev
-RUN apt-get install -y ruby libxslt1-dev
+RUN apt-get update -y && \
+    apt-get install -y curl git mecab libmecab-dev mecab-naist-jdic \
+    daemon libpoppler-dev libpoppler-glib-dev poppler-data poppler-utils libgirepository-1.0 libgirepository1.0-dev poppler-utils graphicsmagick build-essential zlib1g-dev libreadline-dev mongodb-clients \
+    fonts-ipafont-gothic fonts-ipafont-mincho \
+    imagemagick libmagickcore-dev libmagickwand-dev \
+    ruby libxslt1-dev
 
 RUN mkdir -p ~/tmp
 RUN cd ~/tmp && \
