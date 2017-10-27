@@ -82,7 +82,17 @@ RUN set -x \
   # cleanup
   apk del cabocha-builddeps
 
+ENV RUNTIME_PACKAGES="bash linux-headers libxml2 libxslt libstdc++ tzdata ca-certificates openssl readline poppler poppler-glib cairo glib gobject-introspection gdk-pixbuf imagemagick6@edge imagemagick6-dev@edge imagemagick6-c++@edge graphicsmagick gnuplot yaml zlib nodejs-current" \
+    BUILD_PACKAGES="autoconf automake build-base git wget curl curl-dev libffi-dev libtool libxml2-dev libxslt-dev openssl-dev readline-dev poppler-dev cairo-dev glib-dev gobject-introspection-dev gdk-pixbuf-dev yaml-dev zlib-dev"
+
+RUN set -x \
+  && echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories\
+  && echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories\
+  && echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories\
+  && apk add --update --no-cache $RUNTIME_PACKAGES\
+  && apk add --update --no-cache --virtual=build-dependencies $BUILD_PACKAGES
+
 RUN mkdir -p /app
 WORKDIR /app
 
-CMD ["/bin/bash"]
+CMD ["/bin/sh"]
