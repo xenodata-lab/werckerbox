@@ -1,0 +1,98 @@
+FROM xenodatalab/base-ruby:ruby-2.4.2-alpine
+
+MAINTAINER xenodatalab <development@xenodata-lab.com>
+
+ENV MECAB_VERSION="0.996" \
+    mecab_url="https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE"
+
+# mecab
+RUN set -x \
+  && apk add --update --no-cache --virtual mecab-builddeps \
+      bash \
+      ca-certificates \
+      libstdc++ \
+      su-exec \
+      wget \
+      build-base \
+      curl \
+      file \
+      git \
+      openssl \
+      sudo \
+  && CPUCOUNT=$(getconf _NPROCESSORS_ONLN) \
+  # Install MeCab
+  && wget -q -O - ${mecab_url} | tar -xzf - -C /tmp \
+  && cd /tmp/mecab-[0-9]* \
+  && ./configure --enable-utf8-only --with-charset=utf8 \
+  && make  -j ${CPUCOUNT} \
+  && make install \
+  # Install naist-jdic
+  && mkdir -p /dictionary \
+  && cd /dictionary \
+  && wget -q 'http://ja.osdn.net/frs/redir.php?m=iij&f=%2Fnaist-jdic%2F53500%2Fmecab-naist-jdic-0.6.3b-20111013.tar.gz' -O mecab-naist-jdic.tar.gz \
+  && tar xf mecab-naist-jdic.tar.gz \
+  && mv mecab-naist-jdic-0.6.3b-20111013 mecab-naist-jdic \
+  && rm mecab-naist-jdic.tar.gz \
+  && cd mecab-naist-jdic \
+  && ./configure --with-charset=utf8 \
+  && make -j ${CPUCOUNT} \
+  && make install \
+  && make clean \
+  && sed -i -e s/ipadic/naist-jdic/g /usr/local/etc/mecabrc \
+  # clean up
+  && apk del mecab-builddeps \
+  && rm -rf /tmp/mecab-[0-9]*
+
+RUN set -x \
+  && apk add --update --no-cache --virtual cabocha-builddeps \
+      bash \
+      file \
+      ca-certificates \
+      wget \
+      build-base \
+      file \
+      openssl \
+      tar \
+      sudo \
+  && apk add --update --no-cache \
+      libstdc++ \
+  && \
+  mkdir -p ~/tmp && \
+  # CRF++
+  cd ~/tmp && \
+  wget -q 'https://storage.googleapis.com/xeno-public-files/CRF%2B%2B-0.58.tar.gz' -O CRF++-0.58.tar.gz && \
+  tar -xf CRF++-0.58.tar.gz && \
+  rm -f CRF++-0.58.tar.gz && \
+  cd ~/tmp/CRF++-0.58 && \
+  ./configure && \
+  make && \
+  make install && \
+  rm -rf ~/tmp/CRF++-0.58 && \
+  # cabocha
+  cd ~/tmp && \
+  CPPFLAGS=-I/usr/local/include && \
+  wget -q 'https://storage.googleapis.com/xeno-public-files/cabocha-0.69.tar.bz2' -O cabocha-0.69.tar.bz2 && \
+  tar -xf cabocha-0.69.tar.bz2 && \
+  rm -f cabocha-0.69.tar.bz2 && \
+  cd ~/tmp/cabocha-0.69 && \
+  ./configure --prefix=/usr/local --with-charset=UTF8 && \
+  make && \
+  make install && \
+  rm -rf ~/tmp/cabocha-0.69 &&\
+  # cleanup
+  apk del cabocha-builddeps
+
+ENV RUNTIME_PACKAGES="bash linux-headers libxml2 libxslt libstdc++ tzdata ca-certificates openssl readline poppler poppler-glib cairo glib gobject-introspection gdk-pixbuf imagemagick6@edge imagemagick6-dev@edge imagemagick6-c++@edge graphicsmagick gnuplot yaml zlib nodejs-current" \
+    BUILD_PACKAGES="autoconf automake build-base git wget curl curl-dev libffi-dev libtool libxml2-dev libxslt-dev openssl-dev readline-dev poppler-dev cairo-dev glib-dev gobject-introspection-dev gdk-pixbuf-dev yaml-dev zlib-dev"
+
+RUN set -x \
+  && echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories\
+  && echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories\
+  && echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories\
+  && apk add --update --no-cache $RUNTIME_PACKAGES\
+  && apk add --update --no-cache --virtual=build-dependencies $BUILD_PACKAGES
+
+RUN mkdir -p /app
+WORKDIR /app
+
+CMD ["/bin/sh"]
