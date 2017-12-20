@@ -7,7 +7,8 @@ RUN apt-get update -y && \
     daemon libpoppler-dev libpoppler-glib-dev poppler-data poppler-utils libgirepository-1.0 libgirepository1.0-dev poppler-utils graphicsmagick build-essential zlib1g-dev libreadline-dev mongodb-clients \
     fonts-ipafont-gothic fonts-ipafont-mincho \
     imagemagick libmagickcore-dev libmagickwand-dev \
-    libxslt1-dev
+    libxslt1-dev \
+    tzdata
 
 RUN mkdir -p ~/tmp &&\
     cd ~/tmp && \
