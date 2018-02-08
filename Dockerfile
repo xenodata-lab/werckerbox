@@ -1,4 +1,4 @@
-FROM xenodatalab/base-ruby:ruby-2.4.3
+FROM xenodatalab/base-ruby:ruby-2.5.0
 
 MAINTAINER xenodatalab <development@xenodata-lab.com>
 
