@@ -1,4 +1,4 @@
-FROM xenodatalab/base-ruby:ruby-2.5.0
+FROM xenodatalab/base-ruby:ruby-2.5.0_gems-2.7.6
 
 MAINTAINER xenodatalab <development@xenodata-lab.com>
 
