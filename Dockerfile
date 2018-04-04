@@ -1,4 +1,4 @@
-FROM xenodatalab/docker-base-image-ruby:ruby-2.5.1
+FROM xenodatalab/base-image-ruby:ruby-2.5.1
 
 MAINTAINER xenodatalab <development@xenodata-lab.com>
 
