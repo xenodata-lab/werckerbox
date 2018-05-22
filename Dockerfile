@@ -2,6 +2,7 @@ FROM xenodatalab/base-image-ruby:ruby-2.5.1_ubuntu-18.04
 
 MAINTAINER xenodatalab <development@xenodata-lab.com>
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
     apt-get install -y curl git mecab libmecab-dev mecab-naist-jdic \
     daemon libpoppler-dev libpoppler-glib-dev poppler-data poppler-utils libgirepository-1.0 libgirepository1.0-dev poppler-utils graphicsmagick build-essential zlib1g-dev libreadline-dev mongodb-clients \
