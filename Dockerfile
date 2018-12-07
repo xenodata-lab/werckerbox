@@ -1,4 +1,4 @@
-FROM xenodatalab/base-image-ruby:ruby-2.5.1_no-emacs_ubuntu-18.04
+FROM xenodatalab/base-image-ruby:ruby-2.5.3_no-emacs_ubuntu-18.04
 
 MAINTAINER xenodatalab <development@xenodata-lab.com>
 
