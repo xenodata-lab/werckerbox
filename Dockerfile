@@ -4,12 +4,17 @@ MAINTAINER xenodatalab <development@xenodata-lab.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
+    apt-get install -y gnupg && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y mecab libmecab-dev mecab-naist-jdic \
     daemon libpoppler-dev libpoppler-glib-dev poppler-data poppler-utils libgirepository-1.0 libgirepository1.0-dev poppler-utils graphicsmagick build-essential zlib1g-dev libreadline-dev mongodb-clients \
     fonts-ipafont-gothic fonts-ipafont-mincho \
     imagemagick libmagickcore-dev libmagickwand-dev \
     libxslt1-dev \
-    tzdata
+    tzdata \
+    nodejs yarn
 
 RUN mkdir -p ~/tmp &&\
     cd ~/tmp && \
